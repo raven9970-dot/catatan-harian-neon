@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: catatan-harian-neon
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_ENDPOINT_URL_S3
+        sync: false
+      - key: AWS_REGION
+        value: us-east-2
+      - key: NEON_BRANCH
+        value: production
+      - key: NEON_BRANCH_ID
+        sync: false
+      - key: NEON_FUNCTION_HOST_SUFFIX
+        sync: false
+      - key: NEON_REALTIME_URL
+        sync: false
+      - key: NEON_REALTIME_SECRET
+        sync: false
+      - key: NEON_AI_GATEWAY_TOKEN
+        sync: false
+      - key: NEON_AI_GATEWAY_BASE_URL
+        sync: false
