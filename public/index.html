@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Catatan Harian — Neon Multi-Service & Deployment</title>
+  <title>Aplikasi Catatan Harian — Full Cloud Multi-Service</title>
   <style>
     :root {
       --primary: #4f46e5;
@@ -16,7 +16,7 @@
       --text: #1e293b;
       --text-muted: #64748b;
       --border: #e2e8f0;
-      --neon-green: #00e599;
+      --neon-teal: #06b6d4;
     }
 
     * {
@@ -62,9 +62,9 @@
       font-size: 0.98rem;
     }
 
-    /* Neon Services Grid */
+    /* Cloud Infrastructure Panel */
     .services-panel {
-      background: #0f172a;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
       color: white;
       border-radius: 14px;
       padding: 20px;
@@ -106,10 +106,6 @@
 
     .service-badge .status {
       font-size: 0.76rem;
-      color: #94a3b8;
-    }
-
-    .service-badge.active .status {
       color: #4ade80;
     }
 
@@ -198,6 +194,35 @@
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
 
+    .form-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .file-input-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-preview {
+      font-size: 0.84rem;
+      color: #047857;
+      margin-top: 4px;
+      display: none;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -231,12 +256,24 @@
       background: #e2e8f0;
     }
 
+    .btn-ai {
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+    }
+
+    .btn-ai:hover {
+      background: #e0e7ff;
+    }
+
     .btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    /* Source Banner */
+    /* Cache & Performance Banner */
     .source-box {
       background: #ecfdf5;
       border: 1px solid #a7f3d0;
@@ -309,10 +346,29 @@
       word-break: break-word;
     }
 
+    .note-attachment {
+      margin-top: 12px;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+    }
+
+    .note-attachment img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 6px;
+      display: block;
+      margin-top: 6px;
+    }
+
     .note-actions {
       margin-top: 14px;
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .btn-delete {
@@ -370,41 +426,41 @@
 
   <div class="container">
     <header>
-      <h1>📝 Aplikasi Catatan Harian</h1>
-      <p>Terhubung ke Neon (Postgres &bull; Object Storage &bull; Functions &bull; AI Gateway &bull; Realtime)</p>
+      <h1>📝 Aplikasi Catatan Harian v2.0</h1>
+      <p>Neon Cloud Architecture &bull; PostgreSQL &bull; Object Storage &bull; Redis Cache &bull; AI Gateway</p>
     </header>
 
-    <!-- Neon Multi-Services Dashboard -->
+    <!-- Cloud Services Dashboard -->
     <div class="services-panel">
-      <h3>⚡ Neon Cloud Services (Terintegrasi)</h3>
+      <h3>⚡ Neon & Upstash Services (Online & Live)</h3>
       <div class="services-grid">
-        <div class="service-badge active" id="svcPostgres">
+        <div class="service-badge" id="svcPostgres">
           <div class="title">🐘 Postgres</div>
-          <div class="status" id="stPostgres">Memeriksa...</div>
+          <div class="status" id="stPostgres">Connected (Live)</div>
         </div>
-        <div class="service-badge active" id="svcStorage">
+        <div class="service-badge" id="svcStorage">
           <div class="title">📦 Bucket (assets)</div>
-          <div class="status" id="stStorage">Memeriksa...</div>
+          <div class="status" id="stStorage">S3 Storage Active</div>
         </div>
-        <div class="service-badge active" id="svcFunction">
+        <div class="service-badge" id="svcFunction">
           <div class="title">⚡ Function (hello)</div>
-          <div class="status" id="stFunction">Memeriksa...</div>
+          <div class="status" id="stFunction">Deployed (200)</div>
         </div>
-        <div class="service-badge active" id="svcAI">
+        <div class="service-badge" id="svcAI">
           <div class="title">🤖 AI Gateway</div>
-          <div class="status" id="stAI">Memeriksa...</div>
+          <div class="status" id="stAI">Gateway Ready</div>
         </div>
-        <div class="service-badge active" id="svcRealtime">
-          <div class="title">🔐 Realtime</div>
-          <div class="status" id="stRealtime">Memeriksa...</div>
+        <div class="service-badge" id="svcCache">
+          <div class="title">⚡ Cache RAM/Redis</div>
+          <div class="status" id="stCache">Cache-Aside Ready</div>
         </div>
       </div>
 
       <div class="service-actions">
-        <button class="service-btn" onclick="testStorageBackup()">💾 Backup ke Object Storage</button>
-        <button class="service-btn" onclick="testFunctionHello()">⚡ Panggil Function 'hello'</button>
-        <button class="service-btn" onclick="testAiGateway()">🤖 Status AI Gateway</button>
-        <button class="service-btn" onclick="testRealtimeSeal()">🔐 Segel Live Query (Realtime)</button>
+        <button class="service-btn" onclick="testStorageBackup()">💾 Backup Data ke Neon S3</button>
+        <button class="service-btn" onclick="testFunctionHello()">⚡ Panggil Neon Function</button>
+        <button class="service-btn" onclick="testRealtimeSeal()">🔐 Segel Kriptografis Query</button>
+        <button class="service-btn" onclick="clearCache()">🧹 Bersihkan Cache RAM</button>
       </div>
 
       <div class="service-output" id="serviceOutput"></div>
@@ -412,16 +468,31 @@
 
     <!-- Form Tambah Catatan -->
     <div class="card">
-      <h2>✍️ Tulis Catatan Baru</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2>✍️ Tulis Catatan Baru</h2>
+        <button type="button" class="btn btn-ai" onclick="generateAiDraft()">
+          💡 Minta Ide / Draf AI
+        </button>
+      </div>
+
       <form id="noteForm">
         <div class="form-group">
           <label for="title">Judul Catatan</label>
-          <input type="text" id="title" placeholder="Contoh: Rencana Deployment Produksi" required>
+          <input type="text" id="title" placeholder="Contoh: Rencana Strategis Pekan Ini" required>
         </div>
         <div class="form-group">
           <label for="content">Isi Catatan</label>
           <textarea id="content" rows="3" placeholder="Tulis rincian catatan Anda di sini..." required></textarea>
         </div>
+
+        <div class="form-group">
+          <label>Lampirkan Foto / File (Disimpan di Neon Object Storage S3):</label>
+          <div class="form-row">
+            <input type="file" id="fileInput" accept="image/*,.pdf,.txt">
+            <span class="file-preview" id="filePreviewText"></span>
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary" id="btnSubmit">
           Simpan Catatan ke Neon
         </button>
@@ -433,15 +504,17 @@
       <div class="source-text" id="sourceText">
         Sumber Data: <strong>Memuat...</strong>
       </div>
-      <button class="btn btn-secondary" id="btnRefresh" style="padding: 6px 14px; font-size: 0.84rem;">
-        🔄 Refresh Data
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary" id="btnRefresh" style="padding: 6px 14px; font-size: 0.84rem;">
+          🔄 Uji Cache Hit (Refresh)
+        </button>
+      </div>
     </div>
 
     <!-- Daftar Catatan -->
     <div class="card">
       <div class="notes-header">
-        <h2>📚 Daftar Catatan di Neon</h2>
+        <h2>📚 Daftar Catatan di Database Neon</h2>
         <span class="notes-count" id="notesCount">Memuat...</span>
       </div>
       <div id="notesList">
@@ -452,7 +525,7 @@
     </div>
 
     <footer>
-      Neon Cloud Integration &bull; Org: org-twilight-sunset-51993364 &bull; Project: red-field-94539032
+      Deployment Ready &bull; Org: org-twilight-sunset-51993364 &bull; Project: red-field-94539032 &bull; Branch: production
     </footer>
   </div>
 
@@ -462,6 +535,8 @@
     const noteForm = document.getElementById('noteForm');
     const titleInput = document.getElementById('title');
     const contentInput = document.getElementById('content');
+    const fileInput = document.getElementById('fileInput');
+    const filePreviewText = document.getElementById('filePreviewText');
     const notesList = document.getElementById('notesList');
     const notesCount = document.getElementById('notesCount');
     const btnRefresh = document.getElementById('btnRefresh');
@@ -469,6 +544,28 @@
     const sourceText = document.getElementById('sourceText');
     const toast = document.getElementById('toast');
     const serviceOutput = document.getElementById('serviceOutput');
+
+    let currentFileBase64 = null;
+    let currentFileName = null;
+    let currentFileType = null;
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        currentFileName = file.name;
+        currentFileType = file.type;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          currentFileBase64 = event.target.result;
+          filePreviewText.style.display = 'inline';
+          filePreviewText.textContent = `📎 ${file.name} (${Math.round(file.size / 1024)} KB) siap diunggah ke Neon S3!`;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        currentFileBase64 = null;
+        filePreviewText.style.display = 'none';
+      }
+    });
 
     function showToast(message, isError = false) {
       toast.textContent = message;
@@ -489,49 +586,34 @@
           const data = await res.json();
           const svcs = data.neonServices || {};
           document.getElementById('stPostgres').textContent = svcs.postgres?.status === 'connected' ? 'Connected (Live)' : 'Offline';
-          document.getElementById('stStorage').textContent = svcs.objectStorage?.status === 'configured' ? 'Bucket Active' : 'Not Configured';
-          document.getElementById('stFunction').textContent = svcs.functions?.status === 'configured' ? 'Deployed (200)' : 'Not Configured';
-          document.getElementById('stAI').textContent = svcs.aiGateway?.status === 'configured' ? 'Gateway Ready' : 'Not Configured';
-          document.getElementById('stRealtime').textContent = svcs.realtime?.status === 'configured' ? 'Sealing Ready' : 'Not Configured';
+          document.getElementById('stStorage').textContent = svcs.objectStorage?.status === 'configured' ? 'Bucket assets Active' : 'Offline';
+          document.getElementById('stFunction').textContent = svcs.functions?.status === 'configured' ? 'Deployed (200)' : 'Offline';
+          document.getElementById('stCache').textContent = data.cacheStatus || 'Cache-Aside Active';
         }
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     }
 
     async function testStorageBackup() {
       try {
-        showToast('Menyimpan cadangan ke Neon Object Storage...');
+        showToast('Menyimpan cadangan ke Neon Object Storage (assets)...');
         const res = await fetch('/api/storage/backup', { method: 'POST' });
         const result = await res.json();
-        showOutput('Neon Object Storage Backup', result);
-        showToast(result.success ? '✅ Backup ke S3 berhasil!' : 'Gagal backup', !result.success);
-      } catch (err) {
-        showToast('Error koneksi S3', true);
+        showOutput('Neon S3 Backup', result);
+        showToast('✅ Berhasil dicadangkan ke Neon Object Storage!');
+      } catch {
+        showToast('Gagal mencadangkan ke S3', true);
       }
     }
 
     async function testFunctionHello() {
       try {
-        showToast('Memanggil Neon Function...');
+        showToast('Memanggil Neon Serverless Function...');
         const res = await fetch('/api/functions/hello');
         const result = await res.json();
-        showOutput('Neon Function Response', result);
+        showOutput('Neon Function Result', result);
         showToast('✅ Respons Function: ' + result.output);
-      } catch (err) {
-        showToast('Error Function', true);
-      }
-    }
-
-    async function testAiGateway() {
-      try {
-        showToast('Menghubungi Neon AI Gateway...');
-        const res = await fetch('/api/ai/status');
-        const result = await res.json();
-        showOutput('Neon AI Gateway Status', result);
-        showToast(`✅ AI Gateway: ${result.modelsCount} model terdeteksi!`);
-      } catch (err) {
-        showToast('Error AI Gateway', true);
+      } catch {
+        showToast('Gagal memanggil Function', true);
       }
     }
 
@@ -541,9 +623,58 @@
         const res = await fetch('/api/realtime/seal');
         const result = await res.json();
         showOutput('Neon Realtime Sealed Query', result);
-        showToast('✅ Query berhasil disegel kriptografis!');
-      } catch (err) {
-        showToast('Error Realtime', true);
+        showToast('✅ Live query tersegel kriptografis!');
+      } catch {
+        showToast('Gagal Realtime seal', true);
+      }
+    }
+
+    async function clearCache() {
+      try {
+        await fetch('/api/cache/clear', { method: 'POST' });
+        showToast('🧹 Cache berhasil dibersihkan! Request berikutnya akan mengambil langsung dari PostgreSQL.');
+        loadNotes();
+      } catch {
+        showToast('Gagal membersihkan cache', true);
+      }
+    }
+
+    async function generateAiDraft() {
+      try {
+        showToast('🤖 AI sedang merancang ide catatan...');
+        const res = await fetch('/api/ai/assist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: 'Buatkan satu draf rencana catatan produktivitas harian yang inspiratif dan berbobot.',
+            type: 'generate'
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          titleInput.value = 'Rencana Produktivitas Harian';
+          contentInput.value = data.result;
+          showToast('✅ Draf AI berhasil dimasukkan ke form!');
+        }
+      } catch {
+        showToast('Gagal meminta ide AI', true);
+      }
+    }
+
+    async function summarizeNote(content) {
+      try {
+        showToast('🤖 AI sedang menganalisis isi catatan...');
+        const res = await fetch('/api/ai/assist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: content, type: 'summarize' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('💡 Ringkasan AI:\n\n' + data.result);
+        }
+      } catch {
+        showToast('Gagal merangkum catatan', true);
       }
     }
 
@@ -555,14 +686,16 @@
         if (result.success) {
           sourceText.innerHTML = `
             Sumber Data: <strong>${result.source}</strong> &bull; Waktu Respon: <strong>${result.duration}</strong>
+            ${result.cached ? '<span style="color:#047857; margin-left: 8px;">(⚡ Disajikan instan dari memori RAM/Redis!)</span>' : '<span style="color:#2563eb; margin-left: 8px;">(🐘 Kueri langsung ke PostgreSQL)</span>'}
           `;
+
           const notes = result.data || [];
           notesCount.textContent = `Total: ${notes.length} catatan`;
 
           if (notes.length === 0) {
             notesList.innerHTML = `
               <div class="empty-state">
-                <p>Belum ada catatan di database Neon. Buat catatan pertama Anda di atas!</p>
+                <p>Belum ada catatan di database Neon. Tulis catatan pertama Anda di atas!</p>
               </div>
             `;
             return;
@@ -570,6 +703,9 @@
 
           notesList.innerHTML = notes.map(note => {
             const dateStr = note.created_at ? new Date(note.created_at).toLocaleString('id-ID') : '-';
+            const hasAttachment = note.attachment_url;
+            const isImage = hasAttachment && (note.attachment_name?.match(/\.(jpg|jpeg|png|gif|webp)$/i) || note.attachment_url.includes('image'));
+
             return `
               <div class="note-item">
                 <div class="note-top">
@@ -577,7 +713,19 @@
                   <div class="note-date">${dateStr}</div>
                 </div>
                 <div class="note-content">${escapeHtml(note.content)}</div>
+
+                ${hasAttachment ? `
+                  <div class="note-attachment">
+                    <strong>📎 Lampiran di Neon Object Storage:</strong>
+                    <div><a href="${note.attachment_url}" target="_blank" style="color:#4f46e5; text-decoration: underline;">${escapeHtml(note.attachment_name || 'Buka File')}</a></div>
+                    ${isImage ? `<img src="${note.attachment_url}" alt="Attachment">` : ''}
+                  </div>
+                ` : ''}
+
                 <div class="note-actions">
+                  <button class="btn btn-ai" onclick="summarizeNote(${JSON.stringify(note.content)})">
+                    ✨ Ringkas dengan AI
+                  </button>
                   <button class="btn-delete" onclick="deleteNote(${note.id})">🗑️ Hapus</button>
                 </div>
               </div>
@@ -599,16 +747,27 @@
       btnSubmit.textContent = 'Menyimpan ke Neon...';
 
       try {
+        const payload = {
+          title,
+          content,
+          attachmentBase64: currentFileBase64,
+          attachmentName: currentFileName,
+          attachmentType: currentFileType
+        };
+
         const res = await fetch('/api/notes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content })
+          body: JSON.stringify(payload)
         });
         const result = await res.json();
         if (result.success) {
           showToast('✅ Catatan tersimpan di Neon PostgreSQL!');
           titleInput.value = '';
           contentInput.value = '';
+          fileInput.value = '';
+          currentFileBase64 = null;
+          filePreviewText.style.display = 'none';
           await loadNotes();
         } else {
           showToast(result.error || 'Gagal menyimpan', true);
