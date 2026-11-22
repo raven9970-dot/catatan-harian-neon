@@ -8,6 +8,12 @@ const { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand } = r
 require('dotenv').config({ path: '.env.local' });
 require('dotenv').config();
 
+// Polyfill Web Crypto API untuk Node.js 18 (globalThis.crypto tersedia mulai Node 19+)
+if (!globalThis.crypto?.subtle) {
+  const { webcrypto } = require('crypto');
+  globalThis.crypto = webcrypto;
+}
+
 // @neon/realtime/server adalah ES Module — gunakan dynamic import
 let createRealtime = null;
 let realtimeServer = null;
