@@ -4,11 +4,27 @@ const path = require('path');
 const { Pool } = require('pg');
 const Redis = require('ioredis');
 const { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand } = require('@aws-sdk/client-s3');
-const { createRealtime, rawSql } = require('@neon/realtime/server');
-
 // Muat konfigurasi env dari .env.local (hasil neon deploy) lalu fallback ke .env
 require('dotenv').config({ path: '.env.local' });
 require('dotenv').config();
+
+// @neon/realtime/server adalah ES Module — gunakan dynamic import
+let createRealtime = null;
+let realtimeServer = null;
+(async () => {
+  try {
+    const mod = await import('@neon/realtime/server');
+    createRealtime = mod.createRealtime;
+    // Inisialisasi realtimeServer setelah modul dimuat
+    if (process.env.NEON_REALTIME_SECRET && createRealtime) {
+      try {
+        realtimeServer = createRealtime({ secret: process.env.NEON_REALTIME_SECRET, db: 'neondb' });
+      } catch {}
+    }
+  } catch (e) {
+    console.warn('⚠️ @neon/realtime/server tidak dapat dimuat:', e.message);
+  }
+})();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -140,15 +156,7 @@ function getHelloFunctionUrl() {
   return null;
 }
 
-let realtimeServer = null;
-if (process.env.NEON_REALTIME_SECRET) {
-  try {
-    realtimeServer = createRealtime({
-      secret: process.env.NEON_REALTIME_SECRET,
-      db: 'neondb'
-    });
-  } catch {}
-}
+// (realtimeServer sudah dideklarasikan dan diinisialisasi via dynamic import di atas)
 
 // ==============================================================
 // 5. HEALTH CHECK ROUTE (GET /health)
